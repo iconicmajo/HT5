@@ -13,7 +13,7 @@ ram = 1
 def simular(nombre,env,wait_time,space):
     global totalPro  # :( mala practica, pero ni modo
 
-       yield env.timeout(wait_time)
+    yield env.timeout(wait_time)
     
     
     posLlegada = env.now
@@ -38,7 +38,8 @@ def simular(nombre,env,wait_time,space):
 # ----------------------
 
 env = simpy.Environment() #ambiente de simulación
-space:cpu = simpy.Container(env,capacity = 1)#Cantidad de CPU
+space = simpy.Resource(env,capacity = 2)#Cantidad de CPU
+#sspace_ram = sipmy.Container(env,capacity= 1) #Cantidad de RAM
 random.seed(10) # fijar el inicio de random
 
 totalPro = 0
