@@ -1,5 +1,5 @@
 #Maria Jose Castro Lemus 181202
-#Andres Berthet
+#Andres Berthet 171504
 #Estructura de datos
 #Lab 5
 #Programa de simulacion
