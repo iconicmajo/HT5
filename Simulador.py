@@ -10,7 +10,7 @@ import random
 cpu = []
 #ram = []
 
-def simular(nombre,env,wait_time,space):
+def simular(nombre,env,wait_time,space,ram):
     global totalPro  #  Tiempo de proceso
     global times
     status = "entrando"
@@ -72,8 +72,8 @@ ram = simpy.Container(env,capacity= 100, init=100) #Cantidad de RAM
 random.seed(10) # fijar el inicio de random
 
 totalPro = 0
-for i in range(15):
-    env.process(simular('proceso %d'%i,env,random.expovariate(1.0/10),space))
+for i in range(15): #numero de procesos 
+    env.process(simular('proceso %d'%i,env,random.expovariate(1.0/10),space,ram))
 
 env.run()  #correr la simulación en tiempo infinito
 promedio = totalPro/25.0
@@ -82,6 +82,7 @@ desvest =0
 times = list()
 for i in times:
     desvest = (i-promedio)*(i-promedio)
+desvest = desvest/15
 print ("desviacion estandar es: ", desvest)#Desviacion por proceso
 
 
