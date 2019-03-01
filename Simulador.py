@@ -14,7 +14,7 @@ def simular(nombre,env,wait_time,space,ram):
     global totalPro  #  Tiempo de proceso
     global times
     status = "entrando"
-    pro=1
+    pro=3
     #crea el proceso
     yield env.timeout(wait_time)
 
@@ -60,6 +60,8 @@ def simular(nombre,env,wait_time,space,ram):
 
 
     tiempoTotal = env.now - posLlegada
+    times = list()
+    times.append(tiempoTotal)
     print ('%s se tardo %f' % (nombre, tiempoTotal))
     totalPro = totalPro + tiempoTotal
 0
@@ -72,17 +74,16 @@ ram = simpy.Container(env,capacity= 100, init=100) #Cantidad de RAM
 random.seed(10) # fijar el inicio de random
 
 totalPro = 0
-for i in range(15): #numero de procesos 
+procesos=25
+for i in range(procesos): #numero de procesos 
     env.process(simular('proceso %d'%i,env,random.expovariate(1.0/10),space,ram))
 
 env.run()  #correr la simulación en tiempo infinito
-promedio = totalPro/25.0
+promedio = totalPro/procesos
 print ("tiempo promedio por proceso es: ", promedio)#Divide el tiempo en el num de process
 desvest =0
-times = list()
+
 for i in times:
     desvest = (i-promedio)*(i-promedio)
-desvest = desvest/15
+desvest = desvest/procesos
 print ("desviacion estandar es: ", desvest)#Desviacion por proceso
-
-
