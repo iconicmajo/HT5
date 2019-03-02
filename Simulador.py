@@ -4,9 +4,15 @@
 #Lab 5
 #Programa de simulacion
 
+
+#El programa esta basado en el ejemplo Gasolinera que esta en CANVAS
+#Calculo estadistico obtenido de: https://www.geeksforgeeks.org
+#Partes del Codigo extraido del libro http://docs.python.org.ar/tutorial/pdfs/TutorialPython2.pdf
 import simpy
 import random
 #import statistics
+
+  
 
 cpu = []
 #ram = []
@@ -14,7 +20,7 @@ cpu = []
 def simular(nombre,env,wait_time,space,ram):
     global totalPro  #  Tiempo de proceso
     global times
-    status = "entrando"
+
     pro= 3
     #crea el proceso
     yield env.timeout(wait_time)
@@ -33,18 +39,16 @@ def simular(nombre,env,wait_time,space,ram):
 
     #Definimos ir ala cola
     with ram.get(tiempoPro) as turno:
-        status = "Listo"
-        print(nombre,"en: ", status, "tiemp: ", env.now)
+        print(nombre, "tiemp: ", env.now)
         #ya esperando turno en ram
         yield turno
         #Si tiene mas de dos instrucciones
         while tiempoPro>2:
             with space.request() as simular:
                 yield simular
-                status = "procesando"
                 tiempoPro = tiempoPro-pro
                 yield env.timeout(1)
-                print(nombre, "estado  ", status, "tiempo: ", env.now)
+                print(nombre,  "tiempo: ", env.now)
             io = random.randint(1,2)
             if(io == 2):
                 yield env.timeout(1)
@@ -82,12 +86,28 @@ for i in range(procesos): #numero de procesos
 env.run()  #correr la simulación en tiempo infinito
 promedio = totalPro/procesos
 print ("tiempo promedio por proceso es: ", promedio)#Divide el tiempo en el num de process
-#trate de sacar la desviacion con estadisticas pero no me saio :( que sad
+
+#*****************************************************
+#trate de sacar la desviacion con estadisticas pero no me salio :( que sad
+#Esto fue lo que intente
 #desvest = statistics.stdev(times, xbar=None)
-
+#posLlegada= list() Creo que esto esta demas pero no lo use
+#m = statistics.mean(times)
+#print("Standard Deviation of Sample set is % s" 
+#         %(statistics.stdev(times, xbar =m)))
+#print ("desviacion estandar es:  % s" %( statistics.stdev(times, xbar=m)))#Desviacion por proceso
+#intento 2:
+#importe
+#import statistics
+#from statistics import stdev 
+  
+# importing frations as parameter values 
+#from fractions import Fraction as fr
+#print("The Standard Deviation of Sample4 is % s" 
+  #                            %(stdev(times)))
+#**********************************************************************
+  #de Geeks for geeks
 for i in times:
-    desvest = (i-promedio)*(i-promedio)
-
-desvest = desvest/procesos
+   desvest = ((i-promedio)*(i-promedio))/procesos
 print ("desviacion estandar es: ", desvest)#Desviacion por proceso
 
